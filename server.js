@@ -16,8 +16,8 @@ mongoose.connect('mongodb://localhost:27017/social_network', {
 });
 
 //Mongoose Models
-const User = require('./models/User');
-const Thought = require('./models/Thought');
+const User = require('./models/user');
+const Thought = require('./models/thought');
 
 //Routes
 app.use('/api/users', userRoutes);
