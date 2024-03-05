@@ -26,6 +26,6 @@ connectDB()
     });
   })
   .catch((error) => {
-    console.error('Connection error:', error.message);
+    console.error('Server connection error:', error.message);
     process.exit(1);
   });
