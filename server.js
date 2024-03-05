@@ -1,29 +1,31 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const connectDB = require('./config/connection');
 const userRoutes = require('./routes/userRoutes');
 const thoughtRoutes = require('./routes/thoughtRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+//Middleware
 app.use(express.json());
 
 //Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/social_network', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+connectDB()
+  .then(() => {
+    //Mongoose Models
+    const User = require('./models/user');
+    const Thought = require('./models/thought');
 
-//Mongoose Models
-const User = require('./models/user');
-const Thought = require('./models/thought');
+    //Routes
+    app.use('/api/users', userRoutes);
+    app.use('/api/thoughts', thoughtRoutes);
 
-//Routes
-app.use('/api/users', userRoutes);
-app.use('/api/thoughts', thoughtRoutes);
-
-//Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+    //Start Server
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Connection error:', error.message);
+    process.exit(1);
+  });
