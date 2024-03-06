@@ -13,4 +13,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST a new thought
+router.post('/', async (req, res) => {
+    try {
+      const thought = new Thought(req.body);
+      await thought.save();
+      res.status(201).json(thought);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
 module.exports = router;
